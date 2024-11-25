@@ -5,20 +5,17 @@ export default {
     const line = this.$refs.line;
     const length = line.getTotalLength();
 
-    // Устанавливаем начальные стили для линии
     line.style.strokeDasharray = length;
     line.style.strokeDashoffset = length;
 
     line.style.opacity = 1;
 
-    // Немедленный запуск анимации
-    const duration = 2000; // Длительность анимации в миллисекундах
+    const duration = 2000;
     const startTime = performance.now();
 
     const animate = (currentTime) => {
       const progress = (currentTime - startTime) / duration;
 
-      // Обновляем strokeDashoffset для создания эффекта отрисовки
       line.style.strokeDashoffset = length * (1 - Math.min(progress, 1));
 
       if (progress < 1) {
