@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import ElDrawer from "~/components/elements/ElDrawer.vue";
+
 import Header from "~/components/layout/default/Header.vue";
 import TheLine from "~/components/Icons/TheLine.vue";
 import ElContentBlock from "~/components/elements/ElContentBlock.vue";
 import PageName from "~/components/PageName.vue";
-import TheBasketBtn from "~/components/Basket/TheBasketBtn.vue";
-import TheBasketModal from "~/components/Modal/TheBasketModal.vue";
+import BasketBtn from "~/components/Basket/BasketBtn.vue";
+import Basket from "~/views/Basket.vue";
 
 const route = useRoute();
 
@@ -35,7 +37,11 @@ const colors = {
   <el-content-block>
     <PageName v-if="route.meta.title" :name="route.meta.title" />
     <slot />
-    <TheBasketBtn />
-    <TheBasketModal />
+    <el-drawer>
+      <template #activator="{ props }">
+        <basket-btn v-bind="props" />
+      </template>
+      <basket />
+    </el-drawer>
   </el-content-block>
 </template>
