@@ -1,4 +1,6 @@
-export default [
+import type { Product } from "~/types/product";
+
+const products: Product[] = [
   {
     id: 1,
     name: "Детская руабшка белая",
@@ -130,6 +132,8 @@ export default [
         name: "Красный",
         bgClr: "red",
         textClr: "#FFF",
+        articule: "",
+        totalAmount: 30,
         img: "/products/1-1.webp",
       },
     ],
@@ -273,6 +277,8 @@ export default [
         name: "Красный",
         bgClr: "red",
         textClr: "#FFF",
+        articule: "",
+        totalAmount: 30,
         img: "/products/1-1.webp",
       },
     ],
@@ -286,3 +292,5 @@ export default [
     articul: "rewrwe",
   },
 ];
+
+export default products;

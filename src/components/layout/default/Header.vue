@@ -25,7 +25,6 @@ const routeTableSizes = {
 };
 
 const tableSize = computed(() => routeTableSizes[route.path] || null);
-console.log("🚀 ~ route.path:", route.path);
 </script>
 
 <template>

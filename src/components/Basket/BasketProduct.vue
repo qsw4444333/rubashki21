@@ -1,20 +1,25 @@
-<script setup>
-const props = defineProps({
-  product: Array,
-});
+<script setup lang="ts">
+import type { Product } from "~/types/product";
 
-const products = inject("products");
+interface Props {
+  product: Product;
+  size: string | number | null;
+  variant: string | number | null;
+  count: number;
+}
 
-props.product.img = products.find((p) => p.id == props.product.id).imgs.img1;
+const emits = defineEmits(["increase", "decrease", "remove"]);
+
+defineProps<Props>();
 </script>
 
 <template>
   <div class="product-mini__item">
     <div class="product-mini__item-left">
-      <NuxtImg preload :src="props.product.img" />
+      <NuxtImg preload :src="product.imgs.img1" />
     </div>
     <div class="product-mini__item-right">
-      <div class="product-mini__item-del" @click="() => {}">
+      <div class="product-mini__item-del" @click="emits('remove')">
         <svg
           width="19"
           height="18"
@@ -35,18 +40,34 @@ props.product.img = products.find((p) => p.id == props.product.id).imgs.img1;
       </div>
       <div class="product-mini__item-size">
         <span> Размер </span>
-        <span> {{ props.product.size.name }} </span>
+        <span
+          :style="{
+            color: !!product.sizes.find((s) => s.id == size)?.size ? '' : 'red',
+          }"
+        >
+          {{ product.sizes.find((s) => s.id == size)?.size || "Не выбрано" }}
+        </span>
       </div>
       <div class="product-mini__item-variant">
         <span> Вариант товара </span>
-        <span> {{ props.product.variant.name }} </span>
+        <span
+          :style="{
+            color: !!product.variants.find((v) => v.id == variant)?.name
+              ? ''
+              : 'red',
+          }"
+        >
+          {{
+            product.variants.find((v) => v.id == variant)?.name || "Не выбрано"
+          }}
+        </span>
       </div>
       <div class="product-mini__item-price">
         <span> Цена за шт </span>
-        <span> {{ props.product.price }} </span>
+        <span> {{ product.price }} </span>
       </div>
       <div class="product-mini__item-amount">
-        <div class="product-mini__item-amount-left" @click="() => {}">
+        <div class="product-mini__item-amount-left" @click="emits('decrease')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -59,9 +80,9 @@ props.product.img = products.find((p) => p.id == props.product.id).imgs.img1;
           </svg>
         </div>
         <div class="product-mini__item-amount-middle">
-          <span> {{ props.product.quantity }} </span>
+          <span> {{ count }} </span>
         </div>
-        <div class="product-mini__item-amount-right" @click="() => {}">
+        <div class="product-mini__item-amount-right" @click="emits('increase')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -78,7 +99,7 @@ props.product.img = products.find((p) => p.id == props.product.id).imgs.img1;
           </svg>
         </div>
         <div class="product-mini__item-totalPrice">
-          <span>{{ props.product.quantity * props.product.price }}</span>
+          <span>{{ Number(product.price) * count }}</span>
         </div>
       </div>
     </div>

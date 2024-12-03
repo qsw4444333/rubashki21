@@ -1,25 +1,27 @@
-<script setup>
+<script setup lang="ts">
 import TheLabel from "./TheLabel.vue";
 
-const props = defineProps({
-  currentProduct: Array,
-  product: Array,
-});
+import type { BasketItem } from "~/store/useBasketStore";
+
+interface Props {
+  basketItem: BasketItem;
+}
+
+const emits = defineEmits(["increase", "decrease"]);
+
+defineProps<Props>();
 </script>
 
 <template>
-  <div
-    class="product-edit-btn"
-    v-if="props.product.id == props.currentProduct.id"
-  >
-    <TheLabel>Размер: {{ props.product.size.name }}</TheLabel
-    ><br />
-    <TheLabel>Вариант: {{ props.product.variant.name }}</TheLabel
-    ><br />
-    <TheLabel>Цена за шт.: {{ props.product.price }} руб</TheLabel>
+  <div class="product-edit-btn">
+    <TheLabel v-if="!!basketItem.size">Размер: {{ basketItem.size }}</TheLabel>
+    <TheLabel v-if="!!basketItem.variant"
+      >Вариант: {{ basketItem.variant }}</TheLabel
+    >
+    <TheLabel>Цена за шт.: {{ basketItem.product.price }} руб</TheLabel>
     <div class="product-btn-inner">
       <div class="product-btn__btns">
-        <div class="product-btn-left" @click="() => {}">
+        <div class="product-btn-left" @click="emits('decrease')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -32,9 +34,9 @@ const props = defineProps({
           </svg>
         </div>
         <div class="product-btn-middl">
-          <span>{{ props.product.quantity }}</span>
+          <span>{{ basketItem.count }}</span>
         </div>
-        <div class="product-btn-right" @click="() => {}">
+        <div class="product-btn-right" @click="emits('increase')">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -52,7 +54,7 @@ const props = defineProps({
         </div>
       </div>
       <div class="product-btn__price">
-        <span>{{ props.product.price * props.product.quantity }}</span>
+        <span>{{ Number(basketItem.product.price) * basketItem.count }}</span>
       </div>
     </div>
   </div>

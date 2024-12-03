@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import ElImg from "../elements/ElImg.vue";
 
 import ProductSizes from "~/components/Product/ProductSizes.vue";
@@ -6,17 +6,36 @@ import ProductVariants from "~/components/Product/ProductVariants.vue";
 
 import ProductPrice from "./ProductPrice.vue";
 import ProductProperty from "./ProductProperty.vue";
+
 import ProductBtn from "./ProductBtn.vue";
 
-// import TheProductEditBtn from "./TheProductEditBtn.vue";
+import ProductEditBtn from "./ProductEditBtn.vue";
 
-const props = defineProps({
-  item: Array,
-});
+import { useBasketStore } from "~/store/useBasketStore";
+
+import type { Product } from "~/types/product";
+
+interface Props {
+  item: Product;
+}
+
+const props = defineProps<Props>();
+
+const basketStore = useBasketStore();
+
+const { basket } = basketStore;
+
+const productBasket = computed(() =>
+  basket.value.find((basket_item) => basket_item.product.id == props.item.id)
+);
 
 const form = reactive({
   size: null,
   variant: null,
+});
+
+watch(form, () => {
+  basketStore.addToBasket({ product: props.item, ...form });
 });
 </script>
 <template>
@@ -34,7 +53,7 @@ const form = reactive({
     </div>
     <product-sizes v-model="form.size" :sizes="item.sizes" />
     <product-variants
-      v-if="form.size"
+      v-if="form.size || form.variant"
       v-model="form.variant"
       :variants="item.variants"
     />
@@ -45,14 +64,16 @@ const form = reactive({
       :value="item.claspType"
     />
     <product-price :price="item.price" />
-    <product-btn />
-    <div class="overflow-y-auto mt-4">
-      <!-- <TheProductEditBtn
-        v-for="(product, index) in basket.products"
-        :key="index"
-        :currentProduct="currentProduct"
-        :product="product"
-      /> -->
+    <product-btn
+      v-if="!productBasket"
+      @click="basketStore.addToBasket({ product: props.item, ...form })"
+    />
+    <div v-else class="overflow-y-auto mt-4">
+      <product-edit-btn
+        :basket-item="productBasket"
+        @decrease="basketStore.decreaseItemBasket(productBasket.product.id)"
+        @increase="basketStore.increaseItemBasket(productBasket.product.id)"
+      />
     </div>
   </div>
 </template>

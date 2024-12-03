@@ -1,9 +1,10 @@
-<script setup>
-const props = defineProps({
-  price: String,
-});
-</script>
+<script setup lang="ts">
+interface Props {
+  price: string | number;
+}
 
+const props = defineProps<Props>();
+</script>
 <template>
   <div
     class="w-full text-right mb-2"
@@ -11,7 +12,6 @@ const props = defineProps({
     itemscope
     itemtype="https://schema.org/Offer"
   >
-    <meta itemprop="priceCurrency" content="RUB" />
     <span
       class="text-4xl text-primary-darker select-text"
       itemprop="price"
