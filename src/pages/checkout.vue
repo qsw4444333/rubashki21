@@ -1,7 +1,7 @@
 <script setup>
 import ElChip from "~/components/elements/ElChip.vue";
 
-import TheIndexLink from "~/components/TheIndexLink.vue";
+import HomeLink from "~/components/HomeLink.vue";
 import CheckoutProduct from "~/components/Checkout/CheckoutProduct.vue";
 import IconViber from "~/components/Icons/IconViber.vue";
 import IconWhatsApp from "~/components/Icons/IconWhatsApp.vue";
@@ -61,7 +61,7 @@ const setActiveLink = (social) => {
 </script>
 
 <template>
-  <TheIndexLink class="mb-2" />
+  <home-Link class="mb-2" />
   <div class="checkout-content">
     <div class="checkout-inner">
       <div class="checkout-inner__item">

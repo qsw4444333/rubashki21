@@ -1,8 +1,14 @@
-<script setup></script>
+<script setup>
+import { useBasketStore } from "~/store/useBasketStore";
+
+const basketStore = useBasketStore();
+
+const productCount = computed(() => basketStore.basket.value.length);
+</script>
 <template>
   <div class="basket-btn">
-    <div class="basket-amount" v-if="false">
-      <span>0</span>
+    <div class="basket-amount" v-if="!!productCount">
+      <span>{{ productCount }}</span>
     </div>
     <div>
       <svg

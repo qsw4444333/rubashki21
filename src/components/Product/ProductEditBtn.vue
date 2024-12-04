@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import TheLabel from "./TheLabel.vue";
-
 import type { BasketItem } from "~/store/useBasketStore";
 
 interface Props {
@@ -14,11 +12,6 @@ defineProps<Props>();
 
 <template>
   <div class="product-edit-btn">
-    <TheLabel v-if="!!basketItem.size">Размер: {{ basketItem.size }}</TheLabel>
-    <TheLabel v-if="!!basketItem.variant"
-      >Вариант: {{ basketItem.variant }}</TheLabel
-    >
-    <TheLabel>Цена за шт.: {{ basketItem.product.price }} руб</TheLabel>
     <div class="product-btn-inner">
       <div class="product-btn__btns">
         <div class="product-btn-left" @click="emits('decrease')">

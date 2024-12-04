@@ -1,11 +1,11 @@
-<script setup>
-const props = defineProps({
-  name: String,
-  bgClr: String,
-  textClr: String,
-});
-</script>
+<script setup lang="ts">
+interface Props {
+  name: string;
+  bgClr: string;
+}
 
+defineProps<Props>();
+</script>
 <template>
   <div class="catalog-item__variant" :style="{ 'background-color': bgClr }">
     <div class="catalog-item__variant-active">
@@ -25,12 +25,9 @@ const props = defineProps({
         />
       </svg>
     </div>
-    <span itemprop="color" :content="name" :style="{ color: textClr }">{{
-      name
-    }}</span>
+    <span itemprop="color" :content="name">{{ name }}</span>
   </div>
 </template>
-
 <style scoped>
 .catalog-item__variant {
   @apply relative rounded-2xl pl-2 pr-2 cursor-pointer transition-shadow duration-200 shadow-primary cursor-pointer;

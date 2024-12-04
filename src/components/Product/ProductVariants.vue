@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import TheVariant from "./TheVariant.vue";
-import TheLabel from "./TheLabel.vue";
+import VariantItem from "./VariantItem.vue";
+import Label from "./Label.vue";
+
+import type { Variant } from "~/types/product";
 
 interface Props {
-  variants: any[];
+  variants: Variant[];
 }
 
 defineProps<Props>();
@@ -20,16 +22,16 @@ const toggleActiveVariant = (variant_id: number) => {
   }
 };
 </script>
-
 <template>
   <div class="w-full">
-    <TheLabel>Выберите вариант</TheLabel>
+    <Label>Выберите вариант</Label>
     <div
       class="flex gap-2 justify-start items-center overflow-x-auto w-full pb-2 pt-2"
     >
-      <TheVariant
+      <variant-item
         v-for="variant in variants"
         :key="variant.id"
+        class="transition-transform"
         :class="{
           ' scale-110': activeVariant == variant.id,
         }"
