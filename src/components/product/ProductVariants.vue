@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import VariantItem from "./VariantItem.vue";
-import Label from "./Label.vue";
+import ProductVariantItem from "./ProductVariantItem.vue";
+import ProductLabel from "./ProductLabel.vue";
 
 import type { Variant } from "~/types/product";
 
@@ -24,11 +24,11 @@ const toggleActiveVariant = (variant_id: number) => {
 </script>
 <template>
   <div class="w-full">
-    <Label>Выберите вариант</Label>
+    <product-label>Выберите вариант</product-label>
     <div
       class="flex gap-2 justify-start items-center overflow-x-auto w-full pb-2 pt-2"
     >
-      <variant-item
+      <product-variant-item
         v-for="variant in variants"
         :key="variant.id"
         class="transition-transform"

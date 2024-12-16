@@ -18,14 +18,19 @@ onMounted(() => {
     }"
   />
   <teleport v-if="isMounted" to="#drawer">
-    <transition name="drawer">
-      <div
-        class="drawer-overlay"
-        :style="{ display: showing ? 'block' : 'none' }"
-      >
+    <div>
+      <transition name="fade">
         <div
-          :class="{ '!translate-x-0 z-40 ': showing }"
-          class="fixed top-0 bottom-0 right-0 max-w-[500px] w-full h-full bg-white -z-30 transition-transform duration-300 translate-x-full rounded-l-2xl"
+          v-if="showing"
+          class="drawer-overlay"
+          @click="showing = false"
+        ></div>
+      </transition>
+
+      <transition name="slide">
+        <div
+          v-if="showing"
+          class="fixed top-0 bottom-0 right-0 max-w-[500px] w-full h-full bg-white z-40 transition-transform rounded-l-2xl"
         >
           <div class="absolute -left-24 top-0 bottom-0 flex items-center">
             <svg
@@ -46,25 +51,35 @@ onMounted(() => {
           </div>
           <slot />
         </div>
-      </div>
-    </transition>
+      </transition>
+    </div>
   </teleport>
 </template>
-<style>
-.drawer-enter-active,
-.drawer-leave-active {
-  transition: opacity 0.2s ease;
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
 }
-
-.drawer-enter-from,
-.drawer-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: transform 0.3s ease-in-out;
+}
+.slide-enter-from {
+  transform: translateX(100%);
+}
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
 .drawer-overlay {
   background: rgba(0, 0, 0, 0.7);
   position: fixed;
-  display: none;
-  z-index: 100;
+  z-index: 10;
   left: 0;
   top: 0;
   width: 100%;

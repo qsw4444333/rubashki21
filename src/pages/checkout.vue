@@ -1,8 +1,10 @@
-<script setup>
+<script setup lang="ts">
+import { useBasketStore } from "~/store/useBasketStore";
+
 import ElChip from "~/components/elements/ElChip.vue";
 
-import HomeLink from "~/components/HomeLink.vue";
-import CheckoutProduct from "~/components/Checkout/CheckoutProduct.vue";
+import BackButton from "~/components/BackButton.vue";
+import CheckoutProduct from "~/components/checkout/CheckoutProduct.vue";
 import IconViber from "~/components/Icons/IconViber.vue";
 import IconWhatsApp from "~/components/Icons/IconWhatsApp.vue";
 
@@ -15,7 +17,10 @@ useSeoMeta({
     "Мы предоставляем на выбор большой каталог школьных и повседневых рубашек на любой вкус и цвет. Рубашки21 продоставляет вам лучшие цены, лучшее качество и большой выбор товаров. Мы находимся в Чебоксарах, доставляем по следующим районам:",
 });
 
-const basket = ref({});
+const basketStore = useBasketStore();
+
+const { basket } = basketStore;
+
 const regions = [
   "Чебоксары",
   "Новочебоксарск",
@@ -32,9 +37,15 @@ const activeSocial = ref("");
 const activeLink = ref("");
 const phone = "79379573099";
 
-const IS_MOBILE = inject("IS_MOBILE");
+const total = computed(() =>
+  basket.value.reduce(
+    (res, basket_item) =>
+      res + basket_item.count * Number(basket_item.product.price),
+    0
+  )
+);
 
-const setActiveSocial = (social) => {
+const setActiveSocial = (social: "viber" | "whatsapp") => {
   activeSocial.value = social;
   setActiveLink(social);
 };
@@ -43,15 +54,11 @@ const generateText = () => {
   return "Привет, текст!";
 };
 
-const setActiveLink = (social) => {
+const setActiveLink = (social: "viber" | "whatsapp") => {
   let link = "";
 
   if (social == "viber") {
-    if (IS_MOBILE.value) {
-      link = encodeURI(`viber://add?number=${phone}?text=` + generateText());
-    } else {
-      link = encodeURI(`viber://chat?number=+${phone}?text=` + generateText());
-    }
+    link = encodeURI(`viber://chat?number=+${phone}?text=` + generateText());
   } else {
     link = encodeURI(`https://wa.me/${phone}?text=` + generateText());
   }
@@ -61,7 +68,7 @@ const setActiveLink = (social) => {
 </script>
 
 <template>
-  <home-Link class="mb-2" />
+  <back-button class="mb-2" />
   <div class="checkout-content">
     <div class="checkout-inner">
       <div class="checkout-inner__item">
@@ -70,15 +77,18 @@ const setActiveLink = (social) => {
             <span>Товары</span>
           </div>
           <div class="checkout-products">
-            <CheckoutProduct
-              v-for="(product, index) in basket.products"
-              :product="product"
+            <checkout-product
+              v-for="(basket_item, index) in basket"
               :key="index"
+              :product="basket_item.product"
+              :size="basket_item.size"
+              :variant="basket_item.variant"
+              :count="basket_item.count"
             />
           </div>
           <div class="checkout-products-total">
             <span>Итого</span>
-            <span>{{ basket.total }} руб</span>
+            <span>{{ total }} руб</span>
           </div>
         </div>
         <div class="checkout-step-2">
@@ -113,7 +123,7 @@ const setActiveLink = (social) => {
               @click="setActiveSocial('viber')"
             >
               <div class="checkout-social__icon">
-                <IconWhatsApp width="24px" height="24px" clr="#FFF" />
+                <icon-whats-app width="24px" height="24px" clr="#FFF" />
               </div>
               <div class="checkout-social__name">
                 <span>viber</span>
@@ -127,7 +137,7 @@ const setActiveLink = (social) => {
               @click="setActiveSocial('whatsapp')"
             >
               <div class="checkout-social__icon">
-                <IconViber width="24px" height="24px" clr="#FFF" />
+                <icon-viber width="24px" height="24px" clr="#FFF" />
               </div>
               <div class="checkout-social__name">
                 <span>whatsapp</span>
@@ -138,7 +148,6 @@ const setActiveLink = (social) => {
             :href="activeLink"
             class="checkout-social-btn"
             v-if="activeLink != ''"
-            @click="goToSocial"
           >
             <span>Перейти</span>
           </a>

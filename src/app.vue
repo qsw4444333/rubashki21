@@ -26,31 +26,14 @@ provide("IS_MOBILE", IS_MOBILE);
   margin: 0;
 }
 
-a,
-p,
-span,
-li,
-th,
-td,
-input,
-label,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "RuslanDisplay", sans-serif;
-  @apply text-black;
-}
-
 span,
 img {
   @apply select-none;
 }
 
 body {
-  @apply relative;
+  @apply relative text-black;
+  font-family: "RuslanDisplay", sans-serif;
 }
 
 body::before {

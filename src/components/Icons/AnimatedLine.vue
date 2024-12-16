@@ -1,22 +1,24 @@
-<script>
-export default {
-  name: "AnimatedLine",
-  mounted() {
-    const line = this.$refs.line;
-    const length = line.getTotalLength();
+<script setup lang="ts">
+const line = ref<SVGPathElement>();
 
-    line.style.strokeDasharray = length;
-    line.style.strokeDashoffset = length;
+onMounted(() => {
+  if (line.value) {
+    const length = line.value.getTotalLength();
 
-    line.style.opacity = 1;
+    line.value.style.strokeDasharray = length.toString();
+    line.value.style.strokeDashoffset = length.toString();
+
+    line.value.style.opacity = String(1);
 
     const duration = 2000;
     const startTime = performance.now();
 
-    const animate = (currentTime) => {
+    const animate = (currentTime: number) => {
       const progress = (currentTime - startTime) / duration;
 
-      line.style.strokeDashoffset = length * (1 - Math.min(progress, 1));
+      line.value!.style.strokeDashoffset = String(
+        length * (1 - Math.min(progress, 1))
+      );
 
       if (progress < 1) {
         requestAnimationFrame(animate);
@@ -24,12 +26,13 @@ export default {
     };
 
     requestAnimationFrame(animate);
-  },
-};
+  }
+});
 </script>
 
 <template>
   <svg
+    class="absolute top-0 left-0 right-0 -z-0 max-w-full"
     width="1920"
     height="874"
     viewBox="0 0 1920 874"
@@ -39,6 +42,7 @@ export default {
     <g filter="url(#filter0_d_2424_281)">
       <path
         ref="line"
+        class="transition-opacity duration-200 opacity-0 shadow-primary"
         d="M-28.5 7.5C456.053 285.32 1524.53 844.754 1928 812.061"
         stroke="#003131"
         stroke-width="100"
@@ -46,13 +50,3 @@ export default {
     </g>
   </svg>
 </template>
-
-<style scoped>
-svg {
-  @apply absolute top-0 left-0 right-0 -z-0 max-w-full;
-}
-
-path {
-  @apply transition-opacity duration-200 opacity-0 shadow-primary;
-}
-</style>

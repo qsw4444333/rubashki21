@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import ElImg from "../elements/ElImg.vue";
 
-import ProductSizes from "~/components/Product/ProductSizes.vue";
-import ProductVariants from "~/components/Product/ProductVariants.vue";
+import ProductSizes from "~/components/product/ProductSizes.vue";
+import ProductVariants from "~/components/product/ProductVariants.vue";
 
 import ProductPrice from "./ProductPrice.vue";
 import ProductProperty from "./ProductProperty.vue";
 
 import ProductBtn from "./ProductBtn.vue";
 
-import ProductEditBtn from "./ProductEditBtn.vue";
+// import ProductEditBtn from "./ProductEditBtn.vue";
 
 import { useBasketStore } from "~/store/useBasketStore";
 
@@ -25,18 +25,16 @@ const basketStore = useBasketStore();
 
 const { basket } = basketStore;
 
-const productBasket = computed(() =>
-  basket.value.find((basket_item) => basket_item.product.id == props.item.id)
-);
-
 const form = reactive({
   size: null,
   variant: null,
 });
 
-watch(form, () => {
-  basketStore.addToBasket({ product: props.item, ...form });
-});
+const productBasket = computed(() =>
+  basket.value.find((basket_item) => basket_item.product.id == props.item.id)
+);
+
+const disabled = computed(() => !form.size || !form.variant);
 </script>
 <template>
   <div
@@ -65,15 +63,14 @@ watch(form, () => {
     />
     <product-price :price="item.price" />
     <product-btn
-      v-if="!productBasket"
-      @click="basketStore.addToBasket({ product: props.item, ...form })"
+      :disabled="disabled"
+      :added="!!productBasket"
+      @click="
+        () =>
+          !disabled &&
+          !productBasket &&
+          basketStore.addToBasket({ product: props.item, ...form })
+      "
     />
-    <div v-else class="overflow-y-auto mt-4">
-      <product-edit-btn
-        :basket-item="productBasket"
-        @decrease="basketStore.decreaseItemBasket(productBasket.product.id)"
-        @increase="basketStore.increaseItemBasket(productBasket.product.id)"
-      />
-    </div>
   </div>
 </template>

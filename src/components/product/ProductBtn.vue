@@ -1,8 +1,24 @@
+<script setup lang="ts">
+interface Props {
+  disabled?: boolean;
+  added?: boolean;
+}
+
+const props = defineProps<Props>();
+
+const colorClasses = computed(() => {
+  if (props.added) return "text-primary bg-primary-lighter cursor-default";
+  else if (props.disabled) return "bg-gray-500 text-white cursor-default";
+  return "bg-primary hover:bg-primary-darker text-white cursor-pointer";
+});
+</script>
 <template>
   <div
-    class="w-full flex items-center justify-center gap-5 rounded-2xl bg-primary hover:bg-primary-darker transition-colors duration-200 pt-3 pb-3 cursor-pointer"
+    role="button"
+    class="w-full flex items-center justify-center gap-5 rounded-2xl transition-colors duration-200 pt-3 pb-3"
+    :class="colorClasses"
   >
-    <div class="product-btn_icon">
+    <div v-if="!added">
       <svg
         width="24"
         height="24"
@@ -19,8 +35,8 @@
         />
       </svg>
     </div>
-    <div class="product-btn_text">
-      <span class="text-white">В корзину</span>
+    <div>
+      <span>{{ added ? "Добавлено" : "В корзину" }} </span>
     </div>
   </div>
 </template>

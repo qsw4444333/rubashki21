@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BasketProduct from "~/components/Basket/BasketProduct.vue";
+import BasketProduct from "~/components/basket/BasketProduct.vue";
 
 import { useBasketStore } from "~/store/useBasketStore";
 
@@ -43,12 +43,12 @@ const total = computed(() =>
           <span class="text-lg">Итого</span>
           <span class="select-text text-xl">{{ total }} руб.</span>
         </div>
-        <NuxtLink
+        <nuxt-link
           to="/checkout"
           class="block text-center bg-primary p-4 rounded-2xl cursor-pointer transition-colors duration-200 hover:bg-primary-darker"
         >
           <span class="text-white">Перейти к оформлению</span>
-        </NuxtLink>
+        </nuxt-link>
       </div>
     </div>
   </div>

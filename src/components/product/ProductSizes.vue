@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Label from "./Label.vue";
+import ProductLabel from "./ProductLabel.vue";
 
 interface Props {
   sizes?: any[];
@@ -22,7 +22,7 @@ const toggleActiveSize = (size_id: number) => {
 
 <template>
   <div class="mb-2">
-    <Label>Выберите размер</Label>
+    <product-label>Выберите размер</product-label>
     <div class="flex flex-wrap gap-2">
       <div
         v-for="size in sizes"

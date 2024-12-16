@@ -1,47 +1,38 @@
 <script setup lang="ts">
+import AnimatedLine from "~/components/Icons/AnimatedLine.vue";
+
 import ElDrawer from "~/components/elements/ElDrawer.vue";
 
-import Header from "~/components/layout/default/Header.vue";
-import TheLine from "~/components/Icons/TheLine.vue";
-import ElContentBlock from "~/components/elements/ElContentBlock.vue";
-import PageName from "~/components/PageName.vue";
-import BasketBtn from "~/components/Basket/BasketBtn.vue";
+import ContentBlock from "~/components/layout/elements/ContentBlock.vue";
+import DefaultHeader from "~/components/layout/default/DefaultHeader.vue";
+import PageName from "~/components/layout/elements/PageName.vue";
+
+import BasketBtn from "~/components/basket/BasketBtn.vue";
+
 import Basket from "~/views/Basket.vue";
 
 const route = useRoute();
 
-const links = {
-  whatsapp: "",
-  viber: "",
-};
+const drawer = ref(false);
 
-const colors = {
-  logo: {
-    bg_clr: "#0F0F0F",
-    text_clr: "#FFF",
-    width: "240px",
-    height: "50px",
-  },
-};
+watch(
+  () => route.fullPath,
+  () => {
+    if (drawer.value) drawer.value = false;
+  }
+);
 </script>
 <template>
-  <Header
-    :whatsapp_url="links.whatsapp"
-    :viber_url="links.viber"
-    :bg_clr="colors.logo.bg_clr"
-    :text_clr="colors.logo.text_clr"
-    height="50px"
-    width="230px"
-  />
-  <TheLine />
-  <el-content-block>
-    <PageName v-if="route.meta.title" :name="route.meta.title" />
+  <default-header />
+  <animated-line />
+  <content-block>
+    <page-name v-if="route.meta.title" :name="route.meta.title" />
     <slot />
-    <el-drawer>
+    <el-drawer v-model="drawer">
       <template #activator="{ props }">
         <basket-btn v-bind="props" />
       </template>
       <basket />
     </el-drawer>
-  </el-content-block>
+  </content-block>
 </template>

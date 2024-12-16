@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { useBasketStore } from "~/store/useBasketStore";
 
 const basketStore = useBasketStore();

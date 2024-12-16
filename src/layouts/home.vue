@@ -1,32 +1,26 @@
 <script setup lang="ts">
-import Logo from "~/components/Logo.vue";
+import Logo from "~/components/layout/elements/Logo.vue";
 import IconViber from "~/components/Icons/IconViber.vue";
 import IconWhatsApp from "~/components/Icons/IconWhatsApp.vue";
 import ElImg from "~/components/elements/ElImg.vue";
-
-const viber_url = "",
-  whatsapp_url = "";
 </script>
 <template>
   <div class="w-full h-[100vh]">
-    <div class="w-full max-h-full h-full flex items-start justify-center">
+    <div
+      class="w-full max-h-full h-full flex items-start justify-center flex-wrap"
+    >
       <div
         class="h-full relative flex flex-col items-center justify-start"
         style="flex: 0 0 50%"
       >
         <header class="relative my-5 z-10">
           <div class="w-auto">
-            <Logo
-              width="230px"
-              height="50px"
-              bg_clr="#0F0F0F"
-              text_clr="#FFF"
-            />
+            <logo />
             <div>
-              <NuxtLink :to="viber_url">
+              <NuxtLink to="/">
                 <IconViber width="20px" height="20px" clr="#FFF" />
               </NuxtLink>
-              <NuxtLink :to="whatsapp_url">
+              <NuxtLink to="/">
                 <IconWhatsApp width="20px" height="20px" clr="#FFF" />
               </NuxtLink>
             </div>

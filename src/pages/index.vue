@@ -39,7 +39,9 @@ const categories = [
       class="right-content-inner max-w-full h-full p-10 pt-0 pb-32 ml-0 flex flex-col justify-center"
     >
       <h1 class="text-white text-6xl text-center">Рубашки</h1>
-      <div class="flex items-center justify-center gap-6 mt-4">
+      <div
+        class="flex items-center flex-wrap md:flex-nowrap justify-center gap-6 mt-4"
+      >
         <category-list-view
           v-for="(category, index) in categories"
           :key="index"

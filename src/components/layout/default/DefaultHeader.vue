@@ -1,32 +1,25 @@
-<script setup>
-import ElModal from "~/components/elements/ElModal.vue";
-
-import Logo from "~/components/Logo.vue";
+<script setup lang="ts">
 import IconViber from "~/components/Icons/IconViber.vue";
 import IconWhatsApp from "~/components/Icons/IconWhatsApp.vue";
-import TableSize from "~/components/Modal/TableSize.vue";
 
-const props = defineProps({
-  whatsapp_url: String,
-  viber_url: String,
-  width: String,
-  height: String,
-  bg_clr: String,
-  text_clr: String,
-});
+import ElModal from "~/components/elements/ElModal.vue";
+
+import Logo from "~/components/layout/elements/Logo.vue";
+import TableSize from "~/components/layout/elements/TableSize.vue";
 
 const route = useRoute();
 
 const activeHeaderLink = computed(() => route.fullPath);
 
-const routeTableSizes = {
+const routeTableSizes: Record<string, "kids" | "teenage"> = {
   "/detskie-rubashki": "kids",
   "/podrostkovye-rubashki": "teenage",
 };
 
-const tableSize = computed(() => routeTableSizes[route.path] || null);
+const tableSize = computed(() =>
+  route.path in routeTableSizes ? routeTableSizes[route.path] : null
+);
 </script>
-
 <template>
   <header class="pt-1 relative z-10">
     <div class="w-7xl m-auto flex items-center gap-6 justify-between">
@@ -50,25 +43,20 @@ const tableSize = computed(() => routeTableSizes[route.path] || null);
           to="/"
           class="transition-colors hover:text-primary duration-200 text-sm"
         >
-          <Logo
-            :width="width"
-            :height="height"
-            :bg_clr="bg_clr"
-            :text_clr="text_clr"
-          />
+          <logo />
         </nuxt-link>
         <div class="flex gap-1 items-center">
           <nuxt-link
-            :to="viber_url"
+            to="/"
             class="transition-colors text-sm rounded-full bg-primary-darker hover:text-primary duration-200 p-2 cursor-pointer shadow-primary"
           >
-            <IconViber width="20px" height="20px" clr="#FFF" />
+            <icon-viber width="20px" height="20px" clr="#FFF" />
           </nuxt-link>
           <nuxt-link
-            :to="whatsapp_url"
+            to="/"
             class="headetransition-colors text-sm rounded-full bg-primary-darker hover:text-primary transition-colors duration-200 p-2 cursor-pointer shadow-primary"
           >
-            <IconWhatsApp width="20px" height="20px" clr="#FFF" />
+            <icon-whats-app width="20px" height="20px" clr="#FFF" />
           </nuxt-link>
         </div>
         <div>
